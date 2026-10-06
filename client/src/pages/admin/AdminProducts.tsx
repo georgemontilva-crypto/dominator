@@ -49,7 +49,7 @@ export default function AdminProducts() {
     onSuccess: () => {
       setName("");
       refresh();
-      toast.success("Product created. Open it below to add the photo and details.");
+      toast.success("Product created. Open it below to add the photo and description.");
     },
     onError: e => toast.error(e.message || "Could not create product"),
   });
@@ -283,7 +283,6 @@ function ProductEditor({
   const [strain, setStrain] = useState<Strain | "">(product.strain ?? "");
   const [accent, setAccent] = useState(product.accentColor ?? "");
   const [description, setDescription] = useState(product.description ?? "");
-  const [facts, setFacts] = useState(product.facts ?? "");
   const [sortOrder, setSortOrder] = useState(product.sortOrder);
   const { upload, progress, isUploading } = useR2Upload();
 
@@ -337,7 +336,6 @@ function ProductEditor({
       strain: strain || null,
       accentColor: accent || null,
       description: description.trim() || null,
-      facts: facts.trim() || null,
       sortOrder,
     });
   };
@@ -403,18 +401,6 @@ function ProductEditor({
               onChange={e => setDescription(e.target.value)}
               rows={3}
               className={inputClass}
-            />
-          </Field>
-          <Field
-            label="Product facts"
-            hint="One per line, as Label: value. This is the white panel on the product page."
-          >
-            <textarea
-              value={facts}
-              onChange={e => setFacts(e.target.value)}
-              rows={5}
-              placeholder={"Serving size: 1 G (1000 mg)\nCBD per serving: 32.17 mg"}
-              className={`${inputClass} font-mono`}
             />
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">

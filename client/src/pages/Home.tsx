@@ -1,4 +1,4 @@
-import { BrandSection, FaqSection, LabelGuide } from "@/components/HomeSections";
+import { BrandSection, FaqSection } from "@/components/HomeSections";
 import { Jar } from "@/components/Jar";
 import { PublicLayout } from "@/components/PublicLayout";
 import { ReelVideo } from "@/components/ReelVideo";
@@ -48,7 +48,6 @@ export default function Home() {
         lineCount={groupByLine(all).length}
       />
       <Lineup products={all} loading={products.isLoading} />
-      <LabelGuide />
       {reels.length > 0 && <Reels videos={reels} />}
       <FaqSection />
       <ReportFinder />
@@ -311,7 +310,7 @@ function Lineup({
 
 function Reels({ videos }: { videos: PublicVideo[] }) {
   return (
-    <section className="border-b border-rule py-16 md:py-20">
+    <section className="border-y border-rule bg-panel py-16 md:py-20">
       <div className="container">
         <h2 className="text-5xl text-white md:text-7xl">On camera</h2>
       </div>

@@ -5,9 +5,9 @@ panel para cargarlos.
 
 | Ruta | Qué es |
 |---|---|
-| `/` | Home: frasco destacado (o video), las cuatro líneas, reels y buscador de reportes |
+| `/` | Home: frasco destacado (o video), la marca, las cuatro líneas, reels, preguntas y buscador de reportes |
 | `/products` | Todas las cepas, con filtro por línea y por tipo (indica / sativa / hybrid) |
-| `/products/:slug` | Una cepa: foto, descripción, "Product facts" y sus reportes |
+| `/products/:slug` | Una cepa: foto, descripción, botón a su reporte y el resto de la línea |
 | `/lab-reports` | Reportes de todos los lotes, con búsqueda por cepa o número de lote |
 | `/about` | About Us |
 | `/contact` | Contact Us: formulario + datos de la empresa |
@@ -108,9 +108,8 @@ botón **Repair file links** de `/admin/lab-reports` las reescribe.
 - **Lab Reports**: elegir la cepa, escribir el **número de lote tal como está
   impreso en el frasco** (los clientes buscan por él), subir el PDF. Una cepa
   puede tener varios reportes, uno por lote.
-- **Products**: nombre, línea, tipo, color de etiqueta, formato, descripción,
-  "Product facts" (una por línea, `Etiqueta: valor`) y foto. Las fotos se ven
-  mejor en PNG o WebP con fondo transparente.
+- **Products**: nombre, línea, tipo, color de etiqueta, formato, descripción
+  y foto. Las fotos se ven mejor en PNG o WebP con fondo transparente.
 - **Videos**: clips verticales (9:16) en MP4. El marcado con estrella sale en el
   hero del Home; los demás, en la fila "On camera". Sin estrella, el hero
   muestra los frascos.
@@ -120,11 +119,11 @@ botón **Repair file links** de `/admin/lab-reports` las reescribe.
 
 ### QR de los frascos
 
-El QR puede apuntar a la página de la cepa, que ya trae sus reportes:
-`https://TU-DOMINIO/products/flower-28g-sour-diesel#lab-reports`
-(la dirección de cada cepa aparece en el panel, en **Products → Page address**).
-También sirve `https://TU-DOMINIO/lab-reports?q=082601` para abrir la búsqueda
-con el lote ya escrito.
+Los reportes viven en la página Lab Reports. El QR puede apuntar a la búsqueda
+con el lote o la cepa ya escritos:
+
+- `https://TU-DOMINIO/lab-reports?q=082601` (por número de lote)
+- `https://TU-DOMINIO/lab-reports?q=Sour%20Diesel` (por cepa)
 
 ---
 
