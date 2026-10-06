@@ -1,3 +1,4 @@
+import { BrandSection, FaqSection, LabelGuide } from "@/components/HomeSections";
 import { Jar } from "@/components/Jar";
 import { PublicLayout } from "@/components/PublicLayout";
 import { ReelVideo } from "@/components/ReelVideo";
@@ -10,18 +11,9 @@ import {
 } from "@/lib/catalog";
 import { trpc } from "@/lib/trpc";
 import { cn } from "@/lib/utils";
+import { STRAINS } from "@shared/const";
 import { groupByLine, lineSlug } from "@shared/lines";
-import {
-  Crown,
-  FlaskConical,
-  Gem,
-  Hand,
-  Home as HomeIcon,
-  Leaf,
-  Lock,
-  Search,
-  Sprout,
-} from "lucide-react";
+import { FlaskConical, Gem, Leaf, Lock, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 
@@ -51,9 +43,14 @@ export default function Home() {
   return (
     <PublicLayout>
       <Hero picks={picks} video={heroVideo} loading={products.isLoading} />
-      <Standards />
+      <BrandSection
+        strainCount={all.length}
+        lineCount={groupByLine(all).length}
+      />
       <Lineup products={all} loading={products.isLoading} />
+      <LabelGuide />
       {reels.length > 0 && <Reels videos={reels} />}
+      <FaqSection />
       <ReportFinder />
     </PublicLayout>
   );
@@ -212,36 +209,6 @@ function Hero({
   );
 }
 
-/* ─── Standards ─────────────────────────────────────────────────────────────
-   The six marks printed on every label, in the label's own words. */
-
-const STANDARDS = [
-  { icon: Gem, label: "Premium flower" },
-  { icon: Crown, label: "Top shelf" },
-  { icon: HomeIcon, label: "Indoor grown" },
-  { icon: Hand, label: "Hand trimmed" },
-  { icon: Sprout, label: "Small batch" },
-  { icon: FlaskConical, label: "Lab tested" },
-];
-
-function Standards() {
-  return (
-    <section aria-label="What's on every label" className="border-b border-rule">
-      <ul className="container grid grid-cols-2 gap-y-6 py-8 sm:grid-cols-3 lg:grid-cols-6">
-        {STANDARDS.map(s => (
-          <li
-            key={s.label}
-            className="flex items-center gap-3 font-display text-xl font-bold uppercase text-white lg:justify-center"
-          >
-            <s.icon className="h-6 w-6 shrink-0 text-accent" strokeWidth={1.6} />
-            {s.label}
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 /* ─── Lineup ────────────────────────────────────────────────────────────── */
 
 function Lineup({
@@ -257,12 +224,23 @@ function Lineup({
     <section className="container py-16 md:py-24">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h2 className="text-5xl text-white md:text-7xl">The lineup</h2>
-        <Link
-          href="/products"
-          className="font-cond text-lg font-semibold uppercase tracking-wider text-steel underline decoration-white/30 underline-offset-[6px] hover:text-white"
-        >
-          All products
-        </Link>
+        <nav aria-label="Browse by type" className="flex flex-wrap gap-2">
+          {STRAINS.map(type => (
+            <Link
+              key={type}
+              href={`/products?strain=${type}`}
+              className="bg-white/[0.07] px-4 py-2 font-cond text-base font-semibold uppercase tracking-wider text-steel transition-colors hover:bg-white hover:text-black"
+            >
+              {strainLabel(type)}
+            </Link>
+          ))}
+          <Link
+            href="/products"
+            className="bg-white/[0.07] px-4 py-2 font-cond text-base font-semibold uppercase tracking-wider text-steel transition-colors hover:bg-white hover:text-black"
+          >
+            All products
+          </Link>
+        </nav>
       </div>
 
       {loading ? (
@@ -333,7 +311,7 @@ function Lineup({
 
 function Reels({ videos }: { videos: PublicVideo[] }) {
   return (
-    <section className="border-y border-rule bg-panel py-16 md:py-20">
+    <section className="border-b border-rule py-16 md:py-20">
       <div className="container">
         <h2 className="text-5xl text-white md:text-7xl">On camera</h2>
       </div>
@@ -369,7 +347,7 @@ function ReportFinder() {
   const [query, setQuery] = useState("");
 
   return (
-    <section className="container pt-16 md:pt-24">
+    <section className="container">
       <div className="hud">
         <div className="hud-in texture grid gap-10 px-6 py-10 md:px-12 md:py-14 lg:grid-cols-[1.3fr_1fr] lg:items-center">
           <div>
