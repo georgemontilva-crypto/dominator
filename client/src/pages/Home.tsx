@@ -118,7 +118,11 @@ function Hero({
           onBlur={() => setPaused(false)}
         >
           {video ? (
-            <div className="relative mx-auto w-full max-w-[400px]">
+            /* With a clip in the frame the jar stands beside it, overlapping
+               its lower-left corner. The frame moves to the right edge on
+               wide screens so the jar has room to be large without covering
+               the video or reaching into the headline. */
+            <div className="relative mx-auto w-full max-w-[400px] lg:mr-0 xl:mr-4">
               <div className="hud">
                 <div className="hud-in">
                   <ReelVideo
@@ -131,7 +135,7 @@ function Hero({
               {current && (
                 <Link
                   href={`/products/${current.slug}`}
-                  className="absolute -bottom-6 -left-6 block w-[46%] sm:-left-16"
+                  className="absolute -bottom-8 -left-5 block w-[54%] sm:-left-24 sm:w-[66%] lg:-left-[22%] lg:w-[60%] xl:-left-[50%] xl:w-[88%]"
                   aria-label={`${current.name}, ${strainLabel(current.strain)}`}
                 >
                   <Jar
@@ -178,7 +182,9 @@ function Hero({
             <div
               className={cn(
                 "mt-7 flex flex-wrap justify-center gap-2",
-                video && "mt-12"
+                // Under the frame, not under the column, once the frame sits
+                // at the right edge.
+                video && "mx-auto mt-12 max-w-[400px] lg:mr-0 xl:mr-4"
               )}
               role="group"
               aria-label="Choose a strain"
