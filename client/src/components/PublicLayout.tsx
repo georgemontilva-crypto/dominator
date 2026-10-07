@@ -1,10 +1,11 @@
 import { AgeGate } from "@/components/AgeGate";
+import { BackToTop } from "@/components/BackToTop";
 import { Emblem, Wordmark } from "@/components/Logo";
 import { trpc } from "@/lib/trpc";
 import { cn } from "@/lib/utils";
 import { BRAND_NAME, DEFAULT_CONTACT } from "@shared/const";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Link, useLocation } from "wouter";
 
 const NAV = [
@@ -22,6 +23,7 @@ function isActive(location: string, href: string) {
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [open, setOpen] = useState(false);
+  const footerRef = useRef<HTMLElement | null>(null);
 
   // A link in the mobile menu changes the route; the menu shouldn't stay up.
   useEffect(() => setOpen(false), [location]);
@@ -114,16 +116,21 @@ export function PublicLayout({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <SiteFooter />
+      <SiteFooter footerRef={footerRef} />
+      <BackToTop footerRef={footerRef} />
     </div>
   );
 }
 
-function SiteFooter() {
+function SiteFooter({
+  footerRef,
+}: {
+  footerRef: RefObject<HTMLElement | null>;
+}) {
   const details = trpc.site.contactDetails.useQuery().data ?? DEFAULT_CONTACT;
 
   return (
-    <footer className="texture mt-24 border-t border-rule">
+    <footer ref={footerRef} className="texture mt-24 border-t border-rule">
       <div className="container py-14">
         <div className="grid gap-12 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
