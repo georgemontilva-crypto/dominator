@@ -15,7 +15,7 @@ export const BRAND_TAGLINE = "Exotic THC Flower";
  */
 export const DEFAULT_CONTACT = {
   company: "Dominator Enterprises",
-  email: "info@dominatorent.com",
+  email: "support@getdominator.com",
   phone: "386-276-2199",
   address: "418 N 15th Street, Billings, MT 59101",
   instagram: "",
