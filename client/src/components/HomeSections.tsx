@@ -38,9 +38,12 @@ export function BrandSection({
   lineCount: number;
 }) {
   const details = trpc.site.contactDetails.useQuery().data ?? DEFAULT_CONTACT;
-  // "Billings, MT" out of "418 N 15th Street, Billings, MT 59101": the street
-  // belongs on the contact page, the town is what says where the brand is from.
-  const town = details.address.split(",").slice(1).join(",").replace(/\d{5}.*$/, "").trim();
+  // "Cheyenne, WY" out of "2232 Dell Range Blvd, Suite 303, Cheyenne, WY 82009":
+  // the street belongs on the contact page, the town is what says where the
+  // brand is from. Matched from the end so a suite or unit line in the middle
+  // can't be mistaken for the city.
+  const cityState = details.address.match(/([^,]+),\s*([A-Z]{2})\b[^,]*$/);
+  const town = cityState ? `${cityState[1].trim()}, ${cityState[2]}` : "";
 
   return (
     <section className="border-b border-rule">
