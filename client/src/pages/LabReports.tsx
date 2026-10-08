@@ -23,7 +23,9 @@ function normalize(value: string): string {
  * narrows a strain with five batches down to the one in the visitor's hand.
  */
 function filterProduct(product: ReportProduct, query: string): ReportProduct | null {
-  if (!query) return product.reports.length > 0 ? product : null;
+  // With no search every strain is listed, reported or not: the ones still
+  // waiting on their certificate show a "Coming soon" tag instead.
+  if (!query) return product;
   const byName = normalize(`${product.name} ${product.collection ?? ""}`).includes(query);
   if (byName) return product;
   const reports = product.reports.filter(r =>
@@ -42,7 +44,6 @@ export default function LabReports() {
 
   const data = trpc.catalog.publicReports.useQuery();
   const all = data.data ?? [];
-  const totalReports = all.reduce((sum, p) => sum + p.reports.length, 0);
   const q = normalize(query);
 
   const matches = all
@@ -92,8 +93,8 @@ export default function LabReports() {
             <p className="text-steel">
               The reports couldn't be loaded. Reload the page to try again.
             </p>
-          ) : totalReports === 0 && !q ? (
-            <EmptyState title="Reports are on their way">
+          ) : all.length === 0 ? (
+            <EmptyState title="Lab reports coming soon">
               The certificates of analysis are being uploaded. If you need one
               now,{" "}
               <Link href="/contact" className="underline underline-offset-4 hover:text-white">
@@ -153,16 +154,23 @@ export default function LabReports() {
                             ))}
                           </ul>
                         ) : (
-                          <p className="self-center text-steel">
-                            Not posted yet.{" "}
-                            <Link
-                              href="/contact"
-                              className="underline underline-offset-4 hover:text-white"
-                            >
-                              Ask us for it
-                            </Link>
-                            .
-                          </p>
+                          <div className="flex flex-col gap-3 self-center sm:flex-row sm:items-center sm:justify-between">
+                            <span className="plate self-start">
+                              <span className="plate-in text-lg text-accent">
+                                Coming soon
+                              </span>
+                            </span>
+                            <p className="text-steel">
+                              Need it now?{" "}
+                              <Link
+                                href="/contact"
+                                className="underline underline-offset-4 hover:text-white"
+                              >
+                                Ask us for it
+                              </Link>
+                              .
+                            </p>
+                          </div>
                         )}
                       </li>
                     ))}
